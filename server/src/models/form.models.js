@@ -40,10 +40,10 @@ const formSchema = new mongoose.Schema({
     type : String,
     default : "No description provided"
   },
-  // time : {
-  //   type : String,
-  //   required : false
-  // },
+  time : {
+    type : String,
+    required : false
+  },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

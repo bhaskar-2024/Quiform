@@ -3,7 +3,7 @@ import SubmittedForm from "../models/submittedForm.models.js";
 
 const generateForm = async (req , res) => {
     
-    const { formType, title, description, creator, questions } = req.body;
+    const { formType, title, time , description, creator, questions } = req.body;
 
     if (!formType || !["survey", "quiz"].includes(formType)) {
       return res.status(400).json({ message: "Invalid form type" });
@@ -30,6 +30,7 @@ const generateForm = async (req , res) => {
     const newForm = new Form({
       formType,
       title: title || "Untitled Form",
+      time,
       description: description || "No description provided",
       creator,
       questions,

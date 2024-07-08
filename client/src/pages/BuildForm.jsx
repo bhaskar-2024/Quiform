@@ -33,6 +33,7 @@ function BuildForm() {
     const data = {
       formType,
       title,
+      time,
       description,
       creator: user._id,
       questions: form,

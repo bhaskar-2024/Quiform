@@ -8,6 +8,7 @@ function FormPage() {
   const [form, setForm] = useState(null);
   const [responses, setResponses] = useState({});
   const [user, setUser] = useState({});
+  const [timeRemaining, setTimeRemaining] = useState(null); // Timer state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,6 +44,9 @@ function FormPage() {
       });
       if (response.status === 200) {
         setForm(response.data.form);
+        if (response.data.form.formType === 'quiz') {
+          setTimeRemaining(parseInt(response.data.form.time) * 60); // Initialize timer (convert minutes to seconds)
+        }
       } else {
         console.log("Error in form response");
       }
@@ -55,6 +59,18 @@ function FormPage() {
     fetchForm();
   }, [formId]);
 
+  useEffect(() => {
+    let timer;
+    if (timeRemaining !== null && timeRemaining > 0) {
+      timer = setInterval(() => {
+        setTimeRemaining(prevTime => prevTime - 1);
+      }, 1000);
+    } else if (timeRemaining === 0) {
+      handleSubmit(); // Auto-submit the form when the timer reaches zero
+    }
+    return () => clearInterval(timer);
+  }, [timeRemaining]);
+
   const handleChange = (questionId, value) => {
     setResponses(prevResponses => ({
       ...prevResponses,
@@ -63,14 +79,8 @@ function FormPage() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!form) return;
-
-    const missingAnswers = form.questions.filter(question => !responses[question.id]);
-    if (missingAnswers.length > 0) {
-      console.log(`Please answer all the questions.`);
-      return;
-    }
 
     const url = import.meta.env.VITE_BACKEND_URL + "/api/forms/submit-form";
     const submissionData = {
@@ -98,6 +108,11 @@ function FormPage() {
 
   return (
     <div className='sm:max-w-2xl sm:mx-auto'>
+      {form && form.formType === 'quiz' && (
+        <div className="text-right text-lg">
+          Time Remaining: {Math.floor(timeRemaining / 60)}:{timeRemaining % 60 < 10 ? '0' : ''}{timeRemaining % 60}
+        </div>
+      )}
       <form className="space-y-4" onSubmit={handleSubmit}>
         {form ? (
           <>
