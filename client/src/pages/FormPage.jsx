@@ -45,7 +45,19 @@ function FormPage() {
       if (response.status === 200) {
         setForm(response.data.form);
         if (response.data.form.formType === 'quiz') {
-          setTimeRemaining(parseInt(response.data.form.time) * 60); // Initialize timer (convert minutes to seconds)
+          const savedEndTime = localStorage.getItem(`endTime-${formId}`);
+          if (savedEndTime) {
+            const remainingTime = Math.floor((new Date(savedEndTime) - new Date()) / 1000);
+            if (remainingTime > 0) {
+              setTimeRemaining(remainingTime);
+            } else {
+              handleSubmit(); // Auto-submit if time has already elapsed
+            }
+          } else {
+            const endTime = new Date().getTime() + parseInt(response.data.form.time) * 60 * 1000;
+            localStorage.setItem(`endTime-${formId}`, new Date(endTime));
+            setTimeRemaining(parseInt(response.data.form.time) * 60);
+          }
         }
       } else {
         console.log("Error in form response");
@@ -97,6 +109,7 @@ function FormPage() {
         withCredentials: true
       });
       if (response.status === 200) {
+        localStorage.removeItem(`endTime-${formId}`);
         navigate("/feedback-page"); 
       } else {
         console.log("Submission failed");

@@ -12,8 +12,8 @@ function BuildForm() {
   const [description, setDescription] = useState("Describe your form here...");
   const { formType } = useParams();
   const [user, setUser] = useState();
-  const [time , setTime] = useState(10)
-  console.log(formType)
+  const [time, setTime] = useState(10);
+  console.log(formType);
   useEffect(() => {
     let currUser = localStorage.getItem("user");
     currUser = JSON.parse(currUser);
@@ -28,7 +28,7 @@ function BuildForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const url = import.meta.env.VITE_BACKEND_URL + "/api/forms/generate-form";
     const data = {
       formType,
@@ -38,8 +38,8 @@ function BuildForm() {
       creator: user._id,
       questions: form,
     };
-    console.table(data)
-    const validFormTypes = ['survey', 'quiz'];
+    console.table(data);
+    const validFormTypes = ["survey", "quiz"];
     if (!validFormTypes.includes(data.formType)) {
       console.log("Invalid form type");
       return;
@@ -49,7 +49,7 @@ function BuildForm() {
       console.log("Title is required");
       return;
     }
-    if (!data.description || typeof data.description !== 'string') {
+    if (!data.description || typeof data.description !== "string") {
       console.log("Description is required ");
       return;
     }
@@ -57,27 +57,28 @@ function BuildForm() {
       console.log("Atleast add one question");
       return;
     }
-  
+
     for (const question of data.questions) {
-      
       if (!question.title) {
         console.log("Each question must have a title");
         return;
       }
-      if (data.formType === 'quiz' && !question.answer) {
-        console.log(`Each quiz question must have an answer: ${question.title}`);
+      if (data.formType === "quiz" && !question.answer) {
+        console.log(
+          `Each quiz question must have an answer: ${question.title}`
+        );
         return;
       }
 
-      if(question.type === "MCQ" && !question.options) {
-        console.log("add options for each MCQ")
+      if (question.type === "MCQ" && !question.options) {
+        console.log("add options for each MCQ");
         return;
       }
     }
-  
+
     try {
       const response = await axios.post(url, data, { withCredentials: true });
-  
+
       if (response.status === 200) {
         const formId = response.data.formId;
         console.log("formId.....", formId);
@@ -87,7 +88,6 @@ function BuildForm() {
       console.log("log creating form", log);
     }
   };
-  
 
   return (
     <div className="sm:max-w-2xl sm:mx-auto">
@@ -109,13 +109,19 @@ function BuildForm() {
           onChange={(e) => setDescription(e.target.value)}
           className="w-full px-1 text-sm border"
         />
-        <div className="flex items-center">
-          <span className="text-lg font-semibold mr-2 ">Submission time in minutes : </span>
-          <input 
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-          className="text-center text-2xl font-semibold border p-1 font-mono mt-1 shadow-md "></input>
-        </div>
+        {formType === "quiz" && (
+          <div className="flex items-center">
+            <span className="text-lg font-semibold mr-2 ">
+              Submission time in minutes :{" "}
+            </span>
+            <input
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="text-center text-2xl font-semibold border p-1 font-mono mt-1 shadow-md "
+            ></input>
+          </div>
+        )}
+
         {form.map((question, index) => (
           <div key={question.id} className="p-4 border rounded-md shadow-md">
             <h3 className="font-bold">Question {index + 1}</h3>
