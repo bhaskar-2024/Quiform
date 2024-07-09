@@ -99,10 +99,10 @@ const userSignupSchema = z.object({
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
       );
-        console.log(User)
+       
 
       const {password : pass, ...currUser} = user._doc;
-      console.log("userdata on login" ,currUser);
+      // console.log("userdata on login" ,currUser);
       
       const options = {
         httpOnly: true,

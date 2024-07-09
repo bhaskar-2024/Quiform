@@ -35,8 +35,8 @@ const generateForm = async (req, res) => {
     });
     const savedForm = await newForm.save();
     res.status(200).json({ formId: savedForm._id });
-  } catch (message) {
-    console.log("message creating form:", message);
+  } catch (error) {
+    console.log("error creating form:", error);
     res
       .status(500)
       .json({ message: "Failed to create form", message: message.message });
@@ -62,7 +62,7 @@ const getForm = async (req, res) => {
     const form = { ...formFetched };
 
     if (form.creator.toString() === requestingUser.id) {
-      console.log("form with answers ---------------", form);
+      // console.log("form with answers ---------------", form);
       res.status(200).json({ form });
     } else {
       const formWithoutAnswers = {
@@ -73,7 +73,7 @@ const getForm = async (req, res) => {
         creator: creator,
         ...nonCreatorForm
       } = formWithoutAnswers;
-      console.log(nonCreatorForm);
+      // console.log(nonCreatorForm);
       res.status(200).json({ form: nonCreatorForm });
     }
   } catch (error) {
@@ -85,7 +85,7 @@ const getForm = async (req, res) => {
 const submitForm = async (req, res) => {
   try {
     const { userId, formId, responses } = req.body;
-    if(!userId) console.log("userId not found")
+    // if(!userId) console.log("userId not found")
     const newSubmittedForm = new SubmittedForm({
       userId,
       formId,
