@@ -36,7 +36,8 @@ function BuildForm() {
       navigate("/user/login/home");
       return;
     }
-    setUser(JSON.parse(currUser));
+    currUser = JSON.parse(currUser)
+    setUser(currUser);
   }, []);
 
   const addQuestionHandler = (question) => {

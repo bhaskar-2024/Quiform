@@ -31,7 +31,8 @@ function FormPage() {
       navigate(`/user/login/${formId}`);
       return;
     }
-    setUser(JSON.parse(currUser));
+    currUser = JSON.parse(currUser)
+    setUser(currUser);
     fetchSubmission(currUser._id, formId); 
   }, [formId, navigate]);
 
@@ -39,6 +40,7 @@ function FormPage() {
     const url = import.meta.env.VITE_BACKEND_URL + "/api/forms/get-submission";
     try {
       const data = { userId, formId };
+      
       const response = await axios.post(url, data, { withCredentials: true });
       if (response.status === 200 && response.data.submission) {
         navigate('/feedback-page');

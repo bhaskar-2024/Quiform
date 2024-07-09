@@ -47,7 +47,8 @@ function DashBoard() {
         return;
       }
 
-      setUser(JSON.parse(currUser));
+      currUser = JSON.parse(currUser)
+      setUser(currUser);
       getUserForms();
     };
 
