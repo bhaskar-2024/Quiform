@@ -8,44 +8,51 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [mess, setMess] = useState("");
   const navigate = useNavigate();
-  const {source} = useParams()
+  const { source } = useParams();
+
+  const setItemWithExpiry = (key, value, ttl) => {
+    const now = new Date();
+    const item = {
+      value: value,
+      expiry: now.getTime() + ttl,
+    };
+    localStorage.setItem(key, JSON.stringify(item));
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    setMess(""); 
+    setMess("");
 
     try {
-      const url =
-        import.meta.env.VITE_BACKEND_URL + "/api/user/login";
+      const url = import.meta.env.VITE_BACKEND_URL + "/api/user/login";
       const data = {
         email,
         password,
       };
 
       const response = await axios.post(url, data, {
-        withCredentials: true
+        withCredentials: true,
       });
 
       if (response.status === 200) {
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        setItemWithExpiry("user", JSON.stringify(response.data.user), 24 * 60 * 60 * 1000); // 1 day expiry
 
-          if(source === "home")
-          navigate("/user/dashboard"); 
-          else 
-          navigate(`/form/${source}`)
+        if (source === "home") navigate("/user/dashboard");
+        else navigate(`/form/${source}`);
       } else {
         setMess("Invalid email or password. Please try again.");
       }
     } catch (error) {
       console.error("Error during customer signin:", error);
-        setMess("An error occurred. Please try again.");
-      
+      setMess("An error occurred. Please try again.");
     }
   };
+
   return (
     <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gradient-to-r from-teal-300 via-teal-600 to-teal-800 p-6">
       <div className="flex flex-col md:flex-row bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-4xl">
         <div className="md:w-1/2 p-8 flex flex-col justify-center items-center bg-teal-500 text-white">
-        <svg
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-20 w-20 mb-4"
             fill="none"
@@ -60,10 +67,10 @@ const LoginPage = () => {
             />
           </svg>
           <h2 className="text-3xl font-extrabold text-center mb-6">
-          Back to Quiform? 
+            Back to Quiform? 
           </h2>
           <p className="text-center">
-          Log in to access your personalized dashboard and see the latest updates. Continue creating and analyzing with our intuitive tools
+            Log in to access your personalized dashboard and see the latest updates. Continue creating and analyzing with our intuitive tools
           </p>
           <p className="font-semibold mt-2">Let’s continue building brilliant forms together.</p>
         </div>

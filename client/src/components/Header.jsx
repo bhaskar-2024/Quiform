@@ -7,17 +7,42 @@ const Header = () => {
   const [currUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
 
+  const getItemWithExpiry = (key) => {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) {
+      return null;
+    }
+    try {
+      const item = JSON.parse(itemStr);
+      const now = new Date();
+      if (now.getTime() > item.expiry) {
+        localStorage.removeItem(key);
+        return null;
+      }
+      return item.value;
+    } catch (error) {
+      console.log("Error parsing localStorage item:", error);
+      return null;
+    }
+  };
+
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const user = getItemWithExpiry("user");
     if (user) {
+      // console.log("User found in localStorage:", user);
       setCurrentUser(JSON.parse(user));
+    } else {
+      // console.log("No user found in localStorage");
+      setCurrentUser(null);
     }
   }, []);
+
+ 
 
   const logout = async () => {
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/logout`, {}, { withCredentials: true });
-      localStorage.removeItem("user");
+      localStorage.clear(); 
       setCurrentUser(null);
       navigate("/");
     } catch (error) {
@@ -27,7 +52,9 @@ const Header = () => {
 
   return (
     <header className="w-full sm:px-6 bg-emerald-900 text-white p-1 flex justify-between items-center shadow-md">
-      <div className="flex items-center">
+      <div 
+      onClick={() => navigate("/user/dashboard")}
+      className="flex items-center cursor-pointer">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 384 512"
@@ -53,10 +80,10 @@ const Header = () => {
           </button>
         )}
         {currUser && (
-          <div className="flex items-center gap-2 hover:bg-teal-500 p-2 rounded-md">
+          <div className="flex items-center gap-2 hover:bg-teal-500 p-2 rounded-md cursor-pointer">
             <div>{currUser.name}</div>
             <div className="bg-teal-800 rounded-full h-8 w-8 flex items-center justify-center">
-              <span className="text-lg font-bold text-white">{currUser.name[0].toUpperCase()}</span>
+              <span className="text-lg font-bold text-white">{currUser.name ? currUser.name[0].toUpperCase() : ''}</span>
             </div>
           </div>
         )}
@@ -90,10 +117,12 @@ const Header = () => {
             </button>
           )}
           {currUser && (
-            <div className="flex items-center gap-2 hover:bg-teal-500 p-2 rounded-md w-full justify-center">
+            <div 
+            onClick={() => navigate("/user/dashboard")}
+            className="flex items-center gap-2 hover:bg-teal-500 p-2 rounded-md w-full cursor-pointer justify-center">
               <div>{currUser.name}</div>
               <div className="bg-teal-800 rounded-full h-8 w-8 flex items-center justify-center">
-                <span className="text-lg font-bold text-white">{currUser.name[0].toUpperCase()}</span>
+                <span className="text-lg font-bold text-white">{currUser.name ? currUser.name[0].toUpperCase() : ''}</span>
               </div>
             </div>
           )}

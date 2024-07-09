@@ -50,7 +50,7 @@ const formSchema = new mongoose.Schema({
     required: true,
   },
   questions: [questionSchema],
-});
+} , {timestamps : true});
 
 
 formSchema.pre('save', function(next) {

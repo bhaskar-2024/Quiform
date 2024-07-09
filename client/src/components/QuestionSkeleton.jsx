@@ -15,7 +15,7 @@ function QuestionSkeleton({ addQuestionHandler ,  formType}) {
       ...(questionType === 'MCQ' && { options: Object.values(options) }),
       answer
     };
-    console.table("question is---------" , question)
+    // console.table("question is---------" , question)
     addQuestionHandler(question);
     setQuestionType('MCQ');
     setOptions({ a: '', b: '', c: '', d: '' });

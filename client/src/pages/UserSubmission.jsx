@@ -20,7 +20,7 @@ const UserSubmission = () => {
         console.log("Error fetching form");
       }
     } catch (error) {
-      console.error("Error fetching form", error);
+      console.log("Error fetching form", error);
     }
   };
 
@@ -37,7 +37,7 @@ const UserSubmission = () => {
         console.log("Error fetching submission");
       }
     } catch (error) {
-      console.error("Error fetching submission", error);
+      console.log("Error fetching submission", error);
     }
   };
 

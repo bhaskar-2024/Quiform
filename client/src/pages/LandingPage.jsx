@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 const LandingPage = () => {
     const navigate = useNavigate();
 
+    
+
     return (
         <div className="min-h-screen bg-gradient-to-r from-teal-400 via-emerald-500 to-cyan-500 flex flex-col justify-center items-center">
             {/* header section */}

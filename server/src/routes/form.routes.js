@@ -1,7 +1,7 @@
 
 import { Router } from "express";
 import { verifyToken } from "../utils/verifyUser.js";
-import { generateForm, getForm, getSubmission, getSubmittedFormData, submitForm } from "../controllers/form.controllers.js";
+import { generateForm, getForm, getSubmission, getSubmittedFormData, getUserForms, submitForm } from "../controllers/form.controllers.js";
 
 
 
@@ -12,6 +12,7 @@ router.get("/get-form" , verifyToken , getForm)
 router.post("/submit-form" , verifyToken , submitForm)
 router.get("/get-submitted-form" , verifyToken , getSubmittedFormData)
 router.post("/get-submission" , verifyToken , getSubmission)
+
 
 export default router
 

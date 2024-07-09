@@ -11,14 +11,27 @@ function FormPage() {
   const [timeRemaining, setTimeRemaining] = useState(null); // Timer state
   const navigate = useNavigate();
 
+  const getItemWithExpiry = (key) => {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) {
+      return null;
+    }
+    const item = JSON.parse(itemStr);
+    const now = new Date();
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return item.value;
+  };
+
   useEffect(() => {
-    let currUser = localStorage.getItem("user");
+    let currUser = getItemWithExpiry("user");
     if (!currUser) {
       navigate(`/user/login/${formId}`);
       return;
     }
-    currUser = JSON.parse(currUser);
-    setUser(currUser);
+    setUser(JSON.parse(currUser));
     fetchSubmission(currUser._id, formId); 
   }, [formId, navigate]);
 
@@ -43,8 +56,10 @@ function FormPage() {
         withCredentials: true
       });
       if (response.status === 200) {
-        setForm(response.data.form);
-        if (response.data.form.formType === 'quiz') {
+        const formData = response.data.form;
+        setForm(formData);
+
+        if (formData.formType === 'quiz') {
           const savedEndTime = localStorage.getItem(`endTime-${formId}`);
           if (savedEndTime) {
             const remainingTime = Math.floor((new Date(savedEndTime) - new Date()) / 1000);
@@ -54,9 +69,14 @@ function FormPage() {
               handleSubmit(); // Auto-submit if time has already elapsed
             }
           } else {
-            const endTime = new Date().getTime() + parseInt(response.data.form.time) * 60 * 1000;
-            localStorage.setItem(`endTime-${formId}`, new Date(endTime));
-            setTimeRemaining(parseInt(response.data.form.time) * 60);
+            const formTime = parseInt(formData.time, 10);
+            if (!isNaN(formTime)) {
+              const endTime = new Date().getTime() + formTime * 60 * 1000;
+              localStorage.setItem(`endTime-${formId}`, new Date(endTime));
+              setTimeRemaining(formTime * 60);
+            } else {
+              console.error("Form time is not a valid number");
+            }
           }
         }
       } else {

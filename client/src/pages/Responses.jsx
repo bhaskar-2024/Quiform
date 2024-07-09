@@ -21,7 +21,7 @@ function Responses() {
         console.log("Error fetching form");
       }
     } catch (error) {
-      console.error("Error fetching form", error);
+      console.log("Error fetching form", error);
     }
   };
 
@@ -33,6 +33,7 @@ function Responses() {
         withCredentials: true
       });
       if (response.status === 200) {
+        // console.log("submitted data " , response.data)
         setSubmissions(response.data);
       } else {
         console.log("Error fetching submissions");
@@ -46,7 +47,7 @@ function Responses() {
     fetchForm();
     fetchSubmissions();
   }, [formId]);
-  console.log("form is ---------------" ,form)
+  // console.log("form is ---------------" ,form)
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Form Submissions</h1>

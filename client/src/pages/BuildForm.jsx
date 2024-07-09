@@ -13,11 +13,30 @@ function BuildForm() {
   const { formType } = useParams();
   const [user, setUser] = useState();
   const [time, setTime] = useState(10);
-  console.log(formType);
+  // console.log(formType);
+
+  const getItemWithExpiry = (key) => {
+    const itemStr = localStorage.getItem(key);
+    if (!itemStr) {
+      return null;
+    }
+    const item = JSON.parse(itemStr);
+    const now = new Date();
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return item.value;
+  };
   useEffect(() => {
-    let currUser = localStorage.getItem("user");
-    currUser = JSON.parse(currUser);
-    setUser(currUser);
+    let currUser = getItemWithExpiry("user");
+    
+
+    if (!currUser) {
+      navigate("/user/login/home");
+      return;
+    }
+    setUser(JSON.parse(currUser));
   }, []);
 
   const addQuestionHandler = (question) => {
@@ -38,7 +57,7 @@ function BuildForm() {
       creator: user._id,
       questions: form,
     };
-    console.table(data);
+    
     const validFormTypes = ["survey", "quiz"];
     if (!validFormTypes.includes(data.formType)) {
       console.log("Invalid form type");
@@ -81,11 +100,11 @@ function BuildForm() {
 
       if (response.status === 200) {
         const formId = response.data.formId;
-        console.log("formId.....", formId);
+        // console.log("formId.....", formId);
         navigate(`/form/${formId}`);
       }
-    } catch (log) {
-      console.log("log creating form", log);
+    } catch (error) {
+      console.log("error in submitting form", error);
     }
   };
 

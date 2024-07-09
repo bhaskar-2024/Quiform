@@ -8,42 +8,46 @@ const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mess, setMess] = useState("");
-  const {source} = useParams()
+  const { source } = useParams();
   const navigate = useNavigate();
+
+  const setItemWithExpiry = (key, value, ttl) => {
+    const now = new Date();
+    const item = {
+      value: value,
+      expiry: now.getTime() + ttl,
+    };
+    localStorage.setItem(key, JSON.stringify(item));
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    setMess(""); 
+    setMess("");
 
     try {
-      const url =
-        import.meta.env.VITE_BACKEND_URL + "/api/user/signup";
+      const url = import.meta.env.VITE_BACKEND_URL + "/api/user/signup";
       const data = {
         name,
         email,
         password,
       };
 
-      console.table(data)
-      const response = await axios.post(url, data , {
-        withCredentials : true
+      // console.table(data);
+      const response = await axios.post(url, data, {
+        withCredentials: true,
       });
 
       if (response.status === 200) {
-          console.log(response)
-          localStorage.setItem("user", JSON.stringify(response.data.user));
+        // console.log(response);
+        setItemWithExpiry("user", JSON.stringify(response.data.user), 24 * 60 * 60 * 1000); // 1 day expiry
 
-          if(source === "home")
-          navigate("/user/dashboard") 
-          else 
-          navigate(`/form/${source}`)
-
+        if (source === "home") navigate("/user/dashboard");
+        else navigate(`/form/${source}`);
       } else {
         setMess("Something went wrong. Please try again.");
       }
     } catch (error) {
-        setMess(error.response.data.message);
-     
+      setMess(error.response.data.message);
     }
   };
 
@@ -62,7 +66,7 @@ const SignUpPage = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M12 4v16m8-8H4"
+              d="M9 12h6m2 6H7a2 2 0 01-2-2V6a2 2 0 012-2h4.586a2 2 0 011.414.586l2.828 2.828A2 2 0 0117 8.414V16a2 2 0 01-2 2z"
             />
           </svg>
           <h2 className="text-3xl font-extrabold text-center mb-6">
@@ -71,7 +75,9 @@ const SignUpPage = () => {
           <p className="text-center">
             Sign up to start creating amazing forms for data surveys and quizzes with our intuitive tools.
           </p>
-          <p className="font-semibold mt-2 text-center">Let’s build something amazing together.</p>
+          <p className="font-semibold mt-2 text-center">
+            Let’s build something amazing together.
+          </p>
         </div>
         <div className="md:w-1/2 p-8 flex flex-col justify-center">
           <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-6 font-mono">
