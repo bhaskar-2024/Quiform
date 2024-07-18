@@ -152,6 +152,7 @@ function FormPage() {
         {form ? (
           <>
             <div className='text-center text-3xl font-semibold'>{form.title}</div>
+            <div className='text-center text-xl font-mono'>{form.description}</div>
             {form.questions.map((question, index) => (
               <div key={question.id} className="p-4 border rounded-md shadow-md">
                 <h3 className="font-bold">Question {index + 1}</h3>

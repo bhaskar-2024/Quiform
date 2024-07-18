@@ -7,7 +7,7 @@ const Feedback = () => {
         <h1 className="text-4xl font-bold text-center text-gray-900 mb-4">
           Thank You for Filling Out the Form!
         </h1>
-        <p className="text-lg text-center text-gray-700 mb-6">
+        {/* <p className="text-lg text-center text-gray-700 mb-6">
           We appreciate your time and effort. We would love to hear about your experience. Your feedback helps us improve and serve you better.
         </p>
         <form className="flex flex-col space-y-4">
@@ -22,7 +22,7 @@ const Feedback = () => {
           >
             Send Feedback
           </button>
-        </form>
+        </form> */}
       </div>
     </div>
   );

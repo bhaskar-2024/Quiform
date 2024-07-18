@@ -2,7 +2,40 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
+    const [currUser, setCurrentUser] = useState(null);
     const navigate = useNavigate();
+  
+    const getItemWithExpiry = (key) => {
+      const itemStr = localStorage.getItem(key);
+      if (!itemStr) {
+        return null;
+      }
+      try {
+        const item = JSON.parse(itemStr);
+        const now = new Date();
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key);
+          return null;
+        }
+        return item.value;
+      } catch (error) {
+        console.log("Error parsing localStorage item:", error);
+        return null;
+      }
+    };
+  
+    useEffect(() => {
+      const user = getItemWithExpiry("user");
+      if (user) {
+        // console.log("User found in localStorage:", user);
+        navigate("/user/dashboard")
+        setCurrentUser(JSON.parse(user));
+      } else {
+        // console.log("No user found in localStorage");
+        setCurrentUser(null);
+      }
+    }, []);
+  
 
     
 
