@@ -53,7 +53,8 @@ const userSignupSchema = z.object({
         httpOnly: true,
         secure: true,
         sameSite: "None",
-        partitioned : true
+        partitioned : true,
+        maxAge: 24 * 60 * 60 * 1000 
       };
 
       res
@@ -108,7 +109,8 @@ const userSignupSchema = z.object({
         httpOnly: true,
         secure: true,
         sameSite: "None",
-        partitioned : true
+        partitioned : true,
+        maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
       };
   
       res
@@ -127,7 +129,8 @@ const userSignupSchema = z.object({
         httpOnly: true,
         secure: true,
         sameSite: "None",
-        partitioned : true
+        partitioned : true,
+        maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
       };
       
       res.clearCookie('access_token', options)
