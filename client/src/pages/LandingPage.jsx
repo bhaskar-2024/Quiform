@@ -40,7 +40,7 @@ const LandingPage = () => {
     
 
     return (
-        <div className="min-h-screen  flex flex-col justify-center items-center">
+        <div className="min-h-screen bg-gradient-to-r from-slate-800 to-slate-600 flex flex-col justify-center items-center">
             {/* header section */}
             <div className="text-center text-white p-4">
                 <h1 className="text-5xl font-bold font-mono drop-shadow-lg bg-gray-300 bg-opacity-20 p-2">
