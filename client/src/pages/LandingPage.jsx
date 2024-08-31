@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const LandingPage = () => {
-    const [currUser, setCurrentUser] = useState(null);
+
+function App() {
+
+
+  const [currUser, setCurrentUser] = useState(null);
     const navigate = useNavigate();
   
     const getItemWithExpiry = (key) => {
@@ -35,56 +38,59 @@ const LandingPage = () => {
         setCurrentUser(null);
       }
     }, []);
-  
 
-    
 
-    return (
-        <div className="min-h-screen bg-gradient-to-r from-slate-800 to-slate-600 flex flex-col justify-center items-center">
-            {/* header section */}
-            <div className="text-center text-white p-4">
-                <h1 className="text-5xl font-bold font-mono drop-shadow-lg bg-gray-300 bg-opacity-20 p-2">
-                    <div className='text-teal-950 typewriter overflow-hidden border-r-4 border-orange-500 whitespace-nowrap mx-auto animate-typing font-mono'>Quiform:</div> Revolutionize Your Data Collection
-                </h1>
-            </div>
+  return (
+    <div className="min-h-screen w-full flex flex-col items-center ">
+      <div className="w-full bg-gradient-to-r from-green-400 via-blue-500 to-blue-700 py-4 px-8 flex justify-center space-x-6 items-center sticky top-0 z-10 shadow-md">
+        <button 
+        onClick={() => navigate('/user/login/home')}
+        className="text-white font-semibold hover:bg-blue-600 hover:text-white px-4 py-2 rounded transition-all duration-300">
+          Login
+        </button>
+        <button 
+        onClick={() => navigate('/user/signup/home')}
+        className="bg-white text-blue-600 font-semibold px-4 py-2 rounded shadow-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-300">
+          Signup
+        </button>
+      </div>
+      <div className="max-w-4xl shadow-md w-full mt-3 text-center text-6xl font-bold py-4 font-mono bg-gradient-to-r from-green-400 via-white to-blue-500">
+        Quiform
+      </div>
 
-            <div className="flex flex-col md:flex-row justify-center items-center w-full">
-                {/* image section */}
-                <div className="w-full md:w-1/2 flex justify-center items-center  md:mb-0 p-24 h-auto">
-                    <img
-                        src="https://img.freepik.com/free-vector/illustration-paper_53876-5860.jpg?t=st=1720208434~exp=1720212034~hmac=ea650f8ab4c9debb68d65039aca2a12f3e39a256aa33ebd9b90ad02728a9354f&w=740"
-                        alt="Quiform"
-                        className="rounded-lg shadow-lg w-3/4 md:w-full max-w-full max-h-full"
-                    />
-                </div>
-
-                <div className="w-full md:w-1/2 text-center md:text-left text-white max-w-3xl p-4 flex flex-col justify-center">
-                    {/* content section */}
-                    <div className="space-y-4 text-2xl font-mono drop-shadow-md bg-gray-300 bg-opacity-20 p-4">
-                        <p>
-                            Create <span className='text-teal-950'>stunning surveys</span> and <span className='text-teal-950'>engaging quizzes</span> with ease. Unleash the power of seamless form building today. Whether you're gathering insights or educating your audience, Quiform provides the tools you need to succeed.
-                        </p>
-                        <p>
-                            From data surveys to interactive quizzes, Quiform provides the tools you need to create, manage, and analyze all in one place. Enjoy a streamlined process with our user-friendly interface and robust analytics.
-                        </p>
-                    </div>
-
-                    <div className="flex justify-center md:justify-center space-x-4 mt-8 bg-gray-300 bg-opacity-20 py-4">
-                        <button
-                            onClick={() => navigate('/user/login/home')}
-                            className="bg-white text-teal-500 font-bold py-2 px-6 rounded-full shadow-lg hover:bg-teal-800 hover:text-white transition duration-300">
-                            Log In
-                        </button>
-                        <button
-                            onClick={() => navigate('/user/signup/home')}
-                            className="bg-white text-teal-500 font-bold py-2 px-6 rounded-full shadow-lg hover:bg-teal-800 hover:text-white transition duration-300">
-                            Sign Up
-                        </button>
-                    </div>
-                </div>
-            </div>
+      <div className="flex flex-col md:flex-row w-full max-w-4xl my-8 px-4 md:px-0">
+        <div className="md:w-1/2 flex justify-center md:justify-start mb-8 md:mb-0">
+          <img
+            src="https://i.pinimg.com/736x/c8/04/84/c8048418c460f753d744612c9d0ef0c7.jpg"
+            alt="Quiz Image"
+            className="w-full h-auto max-w-sm rounded-lg shadow-lg"
+          />
         </div>
-    );
-};
+        <div className="md:w-1/2 flex flex-col justify-center items-center md:items-start text-center md:text-left font-mono">
+          <div className="text-3xl font-bold mb-4 w-full text-center">
+            Build Interactive Quizzes!
+          </div>
+          <div className="text-2xl  mb-2 w-full text-center">or</div>
+          <div className="text-3xl font-bold w-full text-center">
+            Create Survey Forms for Your Company!
+          </div>
+        </div>
+      </div>
+      <div className="w-full flex justify-center mb-8">
+        <img
+          src="https://i.pinimg.com/736x/62/f9/c3/62f9c3b0d686bcdb8d5754904396ae75.jpg"
+          alt="Dashboard"
+          className="w-full h-auto max-w-4xl rounded-lg shadow-lg"
+        />
+      </div>
+      <div className="text-center text-lg font-semibold mb-8 px-20 lg:px-64">
+        Start creating your own forms and quizzes today with our easy-to-use
+        platform. Whether you're looking to gather data for your business or
+        engage your audience with fun, interactive content, our tools have you
+        covered.
+      </div>
+    </div>
+  );
+}
 
-export default LandingPage;
+export default App;
