@@ -5,7 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignupPage";
 import LandingPage from "./pages/LandingPage";
 import Feedback from "./pages/FeedbackPage";
-import Header from "./components/Header";
+
 import DashBoard from "./pages/DashBoard";
 import Responses from "./pages/Responses";
 import UserSubmission from "./pages/UserSubmission";

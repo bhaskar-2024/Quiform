@@ -7,8 +7,8 @@ import axios from "axios";
 function DashBoard() {
   const [user, setUser] = useState();
   const navigate = useNavigate();
-  const [forms, setForms] = useState(null); // Modified to null for initial loading state
-  const [loading, setLoading] = useState(true); // Loading state
+  const [forms, setForms] = useState(null); 
+  const [loading, setLoading] = useState(true);
 
   const getUserForms = async () => {
     try {

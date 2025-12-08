@@ -39,7 +39,7 @@ const SignUpPage = () => {
 
       if (response.status === 200) {
         // console.log(response);
-        setItemWithExpiry("user", JSON.stringify(response.data.user), 24 * 60 * 60 * 1000); // 1 day expiry
+        setItemWithExpiry("user", JSON.stringify(response.data.user), 24 * 60 * 60 * 1000); 
 
         if (source === "home") navigate("/user/dashboard");
         else navigate(`/form/${source}`);
